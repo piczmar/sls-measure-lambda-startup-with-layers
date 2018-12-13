@@ -4,10 +4,10 @@ import pandas as pd
 import plotly
 import plotly.graph_objs as go
 
-no_layer_cold = 'no-layer-cold.txt'
+no_layer_cold = 'nolayer-cold.txt'
 layer_cold = 'layer-cold.txt'
-no_layer = 'no-layer.txt'
-layer = 'layer.txt'
+no_layer = 'nolayer-hot.txt'
+layer = 'layer-hot.txt'
 
 
 def dateparse(time_in_millis):
@@ -30,6 +30,8 @@ no_layer_df = pd.read_csv(no_layer, delim_whitespace=True, parse_dates=[1],
                           names=['Duration', 'Timestamp'], header=None)
 no_layer_df.sort_values(by=['Timestamp'], inplace=True)
 
+print(no_layer_df['Timestamp'].max())
+
 layer_df = pd.read_csv(layer, delim_whitespace=True, parse_dates=[1],
                        date_parser=dateparse, index_col=False,
                        names=['Duration', 'Timestamp'], header=None)
@@ -48,20 +50,23 @@ trace_layer_cold = go.Scatter(
 )
 
 trace_no_layer = go.Scatter(
-    x=no_layer_df['Timestamp'], y=layer_cold_df['Duration'],
-    mode='markers', name='No layer'
+    x=no_layer_df['Timestamp'], y=no_layer_df['Duration'],
+    mode='markers', name='No layer (hot)'
 )
 
 trace_layer = go.Scatter(
-    x=layer_df['Timestamp'], y=layer_cold_df['Duration'],
-    mode='markers', name='Layer'
+    x=layer_df['Timestamp'], y=layer_df['Duration'],
+    mode='markers', name='Layer (hot)'
 )
 
-layout = go.Layout(title='Comparing Lambda startup times',
+layout = go.Layout(title='Comparing Lambda Startup Times',
                    plot_bgcolor='rgb(230, 230,230)')
 
+trace = [trace_no_layer_cold, trace_layer_cold, trace_no_layer, trace_layer],
+
+
 fig = go.Figure(
-  data=[trace_no_layer_cold, trace_layer_cold, trace_no_layer, trace_layer],
-  layout=layout)
-plotly.offline.plot(fig, filename='dynamodb-data.html')
+    data=[trace_no_layer_cold, trace_layer_cold, trace_no_layer, trace_layer],
+    layout=layout)
+plotly.offline.plot(fig, filename='timeline-plot.html')
 

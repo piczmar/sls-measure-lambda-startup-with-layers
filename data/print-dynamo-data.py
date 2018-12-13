@@ -15,9 +15,6 @@ def dateparse(time_in_millis):
 df = pd.read_csv(src, delim_whitespace=True, parse_dates=[1],
                  date_parser=dateparse, index_col=False,
                  names=['Duration', 'Timestamp'], header=None)
-#
-# df = pd.read_csv(src, header=None, delim_whitespace=True, index_col=[1], )
-# df.index = pd.to_datetime(df.index, unit='s')
 
 df.sort_values(by=['Timestamp'], inplace=True)
 print(df.columns.tolist())
