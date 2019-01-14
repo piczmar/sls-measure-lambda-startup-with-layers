@@ -11,13 +11,11 @@ which contains 4 branches dedicated to measure lambda startup:
 To gather measures each of the 4 projects need to be deployed in AWS.
 There is a `setup.sh` script to automate it. It will clone each branch, then build and deploy it.
 
-Based on [this benchmark](https://read.acloud.guru/how-long-does-aws-lambda-keep-your-idle-functions-around-before-a-cold-start-bf715d3b810) 
-I assumed 1h as a sufficient interval for triggering cold startup of Lambda function.
+I assumed 2h as a sufficient interval for triggering cold startup of Lambda function.
 
-Each project will deploy 3 lambdas: 
- - a cron function scheduled to trigger another function on time interval (1h for cold start and 2 min for hot start measures)
- - a lambda which will trigger another lambda asynchronously, hence it does not include any logic apart from that
- - a lambda triggered asynchronously and doing some computation, but it is only because I reused my existing project. It has no impact on measurements.
+Each project will deploy 2 lambdas: 
+ - a cron function scheduled to trigger another function on time interval (2h for cold start and 2 min for hot start measures)
+ - a lambda for which we measure execution time which only prints log message
 
 All lambdas are deployed in the same region to minimize network latency during the measures.
 
@@ -56,4 +54,4 @@ I recorded a screen cast and converted movies to gifs with `ffmpeg` and `gifsicl
 ffmpeg -i nl-l-cold.mov -s 1400x800 -pix_fmt rgb24 -r 20 -f gif -  | gifsicle --optimize=3 --delay=3 > nl-l-cold.gif
 ```
 
-The results were described in [this]() blog post
+The results were described in [this](https://medium.com/@piczmar/performance-of-aws-lambda-with-and-without-layers-9bffbb5434f3) blog post.
