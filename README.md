@@ -42,6 +42,7 @@ I used Anaconda environment for this:
 conda create -n plotly python=3.6 pandas plotly
 conda activate plotly
 python print-dynamo-data-combined.py
+python boxes.py
 ```
 
 [data/print-dynamo-data-combined.py](data/print-dynamo-data-combined.py) - prints a [timeline chart](http://htmlpreview.github.io/?https://github.com/piczmar/sls-measure-lambda-startup-with-layers/blob/master/data/timeline-plot.html)
